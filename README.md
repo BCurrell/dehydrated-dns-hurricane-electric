@@ -1,4 +1,4 @@
-# dehydrated-dns-cloudflare
+# dehydrated-dns-hurricane-electric
 
 Dehydrated hook for DNS verification on Hurricane Electric in Python.
 
