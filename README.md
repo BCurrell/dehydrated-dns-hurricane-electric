@@ -22,6 +22,7 @@ For the purposes of this "documentation", I'm assuming you already have these in
 
 - [x] Create shell project with basic dehydrated hook functionality
 - [x] Authenticate with Hurricane Electric
-- [ ] List zones
+- [x] List zones
+- [x] List records
 - [ ] Add DNS record
 - [ ] Remove DNS record

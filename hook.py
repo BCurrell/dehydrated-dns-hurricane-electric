@@ -29,9 +29,9 @@ def get_zone_id(domain):
 
     fld = ".".join((domain, tld))
 
-    # TODO: Get zone ID
+    zone_id = hurricane.get_zone_id(fld)
 
-    return None, fld, subdomain
+    return zone_id, fld, subdomain
 
 
 def dns_lookup(name, resolver=None):
