@@ -66,21 +66,13 @@ def dns_verify(name, content):
     return False
 
 
-def add_record(zone, name, content):
-    pass
-    # TODO: This
-
-
-def remove_record(zone, name, content):
-    pass
-    # TODO: This
-
-
 def deploy_challenge(*args):
     name = prefix + args[0]
     content = args[2]
 
-    # add_record(zone, name, content)
+    zone, fld, subdomain = get_zone_id(name)
+
+    hurricane.add_record(zone, name, content)
 
     dns_verify(name, content)
 
@@ -89,7 +81,9 @@ def clean_challenge(*args):
     name = prefix + args[0]
     content = args[2]
 
-    # remove_record(zone, name, content)
+    zone, fld, subdomain = get_zone_id(name)
+
+    hurricane.remove_record(zone, name, f"\"{content}\"")
 
     dns_verify(name, None)
 
@@ -112,5 +106,4 @@ def main():
 
 
 if __name__ == "__main__":
-    pass
-    # main()
+    main()

@@ -40,6 +40,23 @@ class LoginVerification(Parser):
         return None
 
 
+class RecordChangeVerification(Parser):
+
+    def parse(self):
+        self.soup = self._get_dns_status()
+
+        if self.soup is None:
+            return False
+        
+        return self._check_dns_status()
+
+    def _get_dns_status(self):
+        return self.soup.find(id="dns_status")
+    
+    def _check_dns_status(self):
+        return "Successfully" in self.soup.text
+
+
 class ZoneParser(Parser):
 
     def parse(self):

@@ -6,7 +6,7 @@
 from os import getenv
 from requests import Session
 
-from hurricane.parser import LoginVerification, ZoneParser, RecordParser
+from hurricane.parser import LoginVerification, RecordChangeVerification, ZoneParser, RecordParser
 
 
 class HurricaneElectric(object):
@@ -38,7 +38,7 @@ class HurricaneElectric(object):
         payload = {
             "email": getenv("HE_USERNAME"),
             "pass": getenv("HE_PASSWORD"),
-            "submit": "Login!"
+            "submit": "Login!",
         }
 
         return self._request(url, data=payload)
@@ -68,9 +68,53 @@ class HurricaneElectric(object):
     
     def get_zone_id(self, domain):
         return self.zones.get(domain, None)
+    
+    def get_record(self, zone, name=None, content=None):
+        zone = self.records[zone]
+
+        for record_id, record in zone.items():
+            if name is None or record[0] == name:
+                if content is None or record[1] == content:
+                    return record_id
 
     def add_record(self, zone, name, content):
-        pass
+        url = "https://dns.he.net/index.cgi"
+        payload = {
+            "account": "",
+            "menu": "edit_zone",
+            "Type": "TXT",
+            "hosted_dns_zoneid": zone,
+            "hosted_dns_recordid": "",
+            "hosted_dns_editzone": "1",
+            "Priority": "",
+            "Name": name,
+            "Content": content,
+            "TTL": "300",
+            "hosted_dns_editrecord": "Submit"
+        }
+
+        response = self.session.post(url, data=payload)
+
+        self._verify_record_change(response.text)
 
     def remove_record(self, zone, name, content):
-        pass
+        record_id = self.get_record(zone, name, content)
+
+        url = "https://dns.he.net/index.cgi"
+        payload = {
+            "hosted_dns_zoneid": zone,
+            "hosted_dns_recordid": record_id,
+            "menu": "edit_zone",
+            "hosted_dns_editzone": "1",
+            "hosted_dns_delrecord": "1",
+        }
+
+        response = self.session.post(url, data=payload)
+
+        self._verify_record_change(response.text)
+    
+    def _verify_record_change(self, response):
+        if not RecordChangeVerification(response).parse():
+            # TODO: Fail with grace
+            print("Record change failed")
+            exit(1)

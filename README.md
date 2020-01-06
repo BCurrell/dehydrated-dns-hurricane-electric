@@ -24,5 +24,7 @@ For the purposes of this "documentation", I'm assuming you already have these in
 - [x] Authenticate with Hurricane Electric
 - [x] List zones
 - [x] List records
-- [ ] Add DNS record
-- [ ] Remove DNS record
+- [x] Add DNS record
+- [x] Remove DNS record
+- [ ] Better logging. Or just some logging at all.
+- [ ] Better error handling.
