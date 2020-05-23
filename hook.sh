@@ -1,5 +1,7 @@
 #!/bin/bash
 
-HOOK_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+WORK_DIR=$( basename "${BASH_SOURCE[0]}" )
 
-pipenv run python "${HOOK_DIR}/hook.py" "${@}"
+pushd "${WORK_DIR}"
+
+pipenv run python hook.py "${@}"
