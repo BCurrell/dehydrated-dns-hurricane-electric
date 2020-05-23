@@ -1,6 +1,6 @@
 #!/bin/bash
 
-WORK_DIR=$( basename "${BASH_SOURCE[0]}" )
+WORK_DIR=$( dirname "${BASH_SOURCE[0]}" )
 
 pushd "${WORK_DIR}"
 
